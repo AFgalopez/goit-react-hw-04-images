@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import axios from 'axios';
 import Searchbar from './searchbar/Searchbar.jsx';
 import ImageGallery from './imageGallery/ImageGallery.jsx';
@@ -9,15 +9,15 @@ import Modal from './modal/Modal.jsx';
 import Styles from './app.module.css';
 
 const App = () => {
-  const [query, setQuery] = useState('');
   const [images, setImages] = useState([]);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [largeImageURL, setLargeImageURL] = useState('');
+  const queryRef = useRef('');
 
   const handleSubmit = (query) => {
-    setQuery(query);
+    queryRef.current = query;
     setImages([]);
     setPage(1);
     fetchImages();
@@ -25,7 +25,7 @@ const App = () => {
 
   const fetchImages = () => {
     const apiKey = '40998850-21238c0a5b68611eff0d55619';
-    const url = `https://pixabay.com/api/?q=${query}&page=${page}&key=${apiKey}&image_type=photo&orientation=horizontal&per_page=12`;
+    const url = `https://pixabay.com/api/?q=${queryRef.current}&page=${page}&key=${apiKey}&image_type=photo&orientation=horizontal&per_page=12`;
 
     setLoading(true);
 
